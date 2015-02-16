@@ -1,4 +1,4 @@
-# Dauria Search [![Build Status](https://travis-ci.org/AstroDigital/libra.svg)](https://travis-ci.org/AstroDigital/libra)
+# Libra [![Build Status](https://travis-ci.org/AstroDigital/libra.svg)](https://travis-ci.org/AstroDigital/libra)
 
 ## Overview
 
