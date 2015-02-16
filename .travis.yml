@@ -2,6 +2,10 @@ language: node_js
 node_js:
 - '0.10'
 
+env:
+  global:
+  - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
+
 before_script:
 - npm install -g bower grunt-cli
 - npm install
@@ -11,19 +15,15 @@ before_script:
 
 script: grunt build
 
-env:
-  global:
-  - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
-
 deploy:
   provider: s3
   access_key_id: AKIAJR4CUXWRKZDB6RAA
   secret_access_key:
-    secure: Nf0r2UDHfGzoDgk60y4fu7nu29csaIwgnjldpypNksFukMQlxHV7C1dCmHkCtGdcP/prJKuZlqSpYEhFZi432dtgrsNNxeJm25/UrVzGjI59ZCwJ6bg3fWbUVME4ShELmS5Fk3wLBc4hK61FBd3xo6xZVO80GsJwz0bK5ugBwuE=
+    secure: cYYpx+LVDFLQqMGDuUNODU6kqEFsr4C58wSah4gmHjnK5FrZIcNF6E7A4qEu/yVI3sch6+hZBT4ckprQF0rGQd4EB2graXjmd47hALjSF3srXlOmg2BpOYai/yC08Bj48mzjwQGEW2rBhWSu3aFDgzCuq/K9CMuGXep1AaUWGTM=
   bucket: libra.developmentseed.org
   local-dir: dist
   skip_cleanup: true
   acl: public_read
   on:
-    repo: developmentseed/dauria-search
+    repo: AstroDigital/libra
     branch: master
