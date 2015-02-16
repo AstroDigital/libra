@@ -1,0 +1,29 @@
+language: node_js
+node_js:
+- '0.10'
+
+before_script:
+- npm install -g bower grunt-cli
+- npm install
+- bower install
+- gem install sass --version "=3.4.9"
+- gem install compass --version "=1.0.1"
+
+script: grunt build
+
+env:
+  global:
+  - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
+
+deploy:
+  provider: s3
+  access_key_id: AKIAJR4CUXWRKZDB6RAA
+  secret_access_key:
+    secure: Nf0r2UDHfGzoDgk60y4fu7nu29csaIwgnjldpypNksFukMQlxHV7C1dCmHkCtGdcP/prJKuZlqSpYEhFZi432dtgrsNNxeJm25/UrVzGjI59ZCwJ6bg3fWbUVME4ShELmS5Fk3wLBc4hK61FBd3xo6xZVO80GsJwz0bK5ugBwuE=
+  bucket: libra.developmentseed.org
+  local-dir: dist
+  skip_cleanup: true
+  acl: public_read
+  on:
+    repo: developmentseed/dauria-search
+    branch: master

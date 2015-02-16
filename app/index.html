@@ -1,0 +1,184 @@
+<!doctype html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <title>Libra</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.) styles/vendor.css -->
+    <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css">
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="bower_components/nouislider/distribute/jquery.nouislider.min.css" />
+    <link rel="stylesheet" href="bower_components/nouislider/distribute/jquery.nouislider.pips.min.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="jquery.nouislider.min.css">
+    <link rel="stylesheet" href="jquery.nouislider.pips.min.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+  </head>
+  <body ng-app="dauriaSearchApp">
+    <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <!-- Add your site or application content here -->
+    <div class="" ng-controller="MainCtrl">
+      <div class="row">
+        <div class="col-md-8 col-sm-8 col-xs-8 left-side">
+          <div class="filters">
+            <div class="main-filter-display">
+              <!-- this "bad" html formatting is done purposefully to fix inline-block element spacing -->
+              <div ng-click="toggleOpenFilter('date')" ng-class="{'active': openFilter === 'date'}" class="date-filter-display filter-display">
+              <img src="images/noun_2019_cc_noattr_w.png" title="Date" />: <span id="lower" ng-bind="dateRangeStartTemp"></span>&nbsp;<span ng-bind-template="to"></span>&nbsp;<span id="upper" ng-bind="dateRangeEndTemp"></span></div><div ng-click="toggleOpenFilter('cloud')" ng-class="{'active': openFilter === 'cloud'}" class="cloud-filter-display filter-display">
+              <img src="images/noun_88351_cc_noattr_w.png" title="Cloud Coverage" />: <span ng-bind-template="{{cloudCoverageMin | suffix:'per'}} - {{cloudCoverageMax | suffix:'per'}} "></span></div><div ng-click="toggleOpenFilter('sun')" ng-class="{'active': openFilter === 'sun'}" class="sun-filter-display filter-display">
+              <img src="images/noun_88350_cc_noattr_w.png" title="Sun Azimuth" />: <span ng-bind-template="{{sunAzimuthMin | suffix:'deg'}} - {{sunAzimuthMax | suffix:'deg'}}"></span></div><div ng-click="openModal()" class="filter-display info">
+              <img src="images/noun_52713_cc_noattr_w.png" title="Info" /></div>
+            </div>
+            <div ng-if="openFilter === 'cloud'" class="filter-container cloud-container">
+              <div class="cloudCoverSlider"></div>
+            </div>
+            <div ng-if="openFilter === 'sun'" class="filter-container sun-container">
+              <div class="sunAzimuthSlider"></div>
+            </div>
+            <div ng-if="openFilter === 'date'" class="filter-container date-container">
+              <div class="date-slider-container">
+                <div class="date-slider"></div>
+              </div>
+            </div>
+          </div>
+          <div class="map">
+            <leaflet defaults="defaults" markers="markers" paths="paths" center="center" bounds="bounds" height="100%" width="100%"></leaflet>
+          </div>
+          <div class="spin-box" id="spinner"></div>
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-4 right-side">
+          <div class="results-pane">
+            <div>
+              <div class="sort" ng-if="selectedResult === null">
+                <a href="" role="button" class="btn btn-default" ng-class="{'active':sortField === 'acquisitionDate'}" ng-click="setSortExpression('acquisitionDate')"><img src="images/noun_2019_cc_noattr_w.png" title="Date" /><span ng-if="sortField === 'acquisitionDate' && !sortReverse">&#x2191;</span><span ng-if="sortField === 'acquisitionDate' && sortReverse">&#x2193;</span></a>
+                <a href="" role="button" class="btn btn-default" ng-class="{'active':sortField === 'cloudCoverFull'}" ng-click="setSortExpression('cloudCoverFull')"><img src="images/noun_88351_cc_noattr_w.png" title="Cloud Coverage" /><span ng-if="sortField === 'cloudCoverFull' && !sortReverse">&#x2191;</span><span ng-if="sortField === 'cloudCoverFull' && sortReverse">&#x2193;</span></a>
+                <a href="" role="button" class="btn btn-default" ng-class="{'active':sortField === 'sunAzimuth'}" ng-click="setSortExpression('sunAzimuth')"><img src="images/noun_88350_cc_noattr_w.png" title="Sun Azimuth" /><span ng-if="sortField === 'sunAzimuth' && !sortReverse">&#x2191;</span><span ng-if="sortField === 'sunAzimuth' && sortReverse">&#x2193;</span></a>
+              </div>
+            </div>
+            <div class="scroll">
+              <div class="col-md-6 no-padding">
+                <div class="result" ng-if="selectedResult === null && $even" ng-repeat="result in results | filter: resultsFilter | filter: mapSelectionFilter | orderBy:sortField:sortReverse | limitTo: 50 " ng-click="selectResult(result)" ng-mouseover="drawMarkerOutline(getMarkerName(result))" ng-mouseleave="conditionalResetPaths();">
+                  <div class="result-content">
+                    <img class="thumb pull-right" ng-src="{{result.browseURL}}"/>
+                    <div class="result-overlay">
+                      <div><span ng-bind="result.acquisitionDate"></span><img class="table-icon" src="images/noun_2019_cc_noattr_w.png" title="Date" /></div>
+                      <div><span ng-bind="result.cloudCoverFull | number:2 | suffix:'per'"></span><img class="table-icon" src="images/noun_88351_cc_noattr_w.png" title="Cloud Coverage" /></div>
+                      <div><span ng-bind="result.sunAzimuth | number:2 | suffix:'deg'"></span><img class="table-icon" src="images/noun_88350_cc_noattr_w.png" title="Sun Azimuth" /></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 no-padding">
+                <div class="result" ng-if="selectedResult === null && $odd" ng-repeat="result in results | filter: resultsFilter | filter: mapSelectionFilter | orderBy:sortField:sortReverse | limitTo: 50" ng-click="selectResult(result)" ng-mouseover="drawMarkerOutline(getMarkerName(result))" ng-mouseleave="conditionalResetPaths();">
+                  <div class="result-content">
+                    <img class="thumb pull-right" ng-src="{{result.browseURL}}"/>
+                    <div class="result-overlay">
+                      <div><span ng-bind="result.acquisitionDate"></span><img class="table-icon" src="images/noun_2019_cc_noattr_w.png" title="Date" /></div>
+                      <div><span ng-bind="result.cloudCoverFull | number:2 | suffix:'per'"></span><img class="table-icon" src="images/noun_88351_cc_noattr_w.png" title="Cloud Coverage" /></div>
+                      <div><span ng-bind="result.sunAzimuth | number:2 | suffix:'deg'"></span><img class="table-icon" src="images/noun_88350_cc_noattr_w.png" title="Sun Azimuth" /></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="single-result-container" ng-if="selectedResult !== null">
+              <div class="single-result">
+                <div class="top-bar">
+                  <span class="pull-right" ng-bind="selectedResult.sceneID"></span>
+                  <img class="pull-left" src="images/noun_17256_w.png" ng-click="resetSelectedResult()"/>
+                </div>
+                <div class="preview">
+                  <img ng-src="{{selectedResult.browseURL}}" width="100%"/>
+                </div>
+
+                <div class="result-data">
+                  <img src="images/noun_2019_cc_noattr.png" title="Date" /><span ng-bind="selectedResult.acquisitionDate"></span>
+                  <img src="images/noun_88351_cc_noattr.png" title="Cloud Coverage" /><span ng-bind="selectedResult.cloudCoverFull | number:2 | suffix:'per'"></span>
+                  <img src="images/noun_88350_cc_noattr.png" title="Sun Azimuth" /><span ng-bind="selectedResult.sunAzimuth | number:2 | suffix:'deg'"></span>
+                </div>
+
+                <a href="{{selectedResult.downloadURL}}" target="_blank" class="btn btn-primary" ng-if="!selectedResult.noData" ng-bind-template="Download{{selectedResult.downloadSize}}" ng-click="downloadTrack()"></a>
+                <p ng-if="selectedResult.noData">Not yet available for download</p>
+              </div>
+            </div>
+
+            <div class="info-pane" ng-if="showInfoPane" ng-bind-html="infoPaneMessage">
+
+            </div>
+            <div class="sat-gif" ng-if="satellite" ng-bind-html="satGif">
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+    </div>
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+     <script>
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+       ga('create', 'UA-88478-47');
+       ga('send', 'pageview');
+    </script>
+
+    <!-- build:js(.) scripts/oldieshim.js -->
+    <!--[if lt IE 9]>
+    <script src="bower_components/es5-shim/es5-shim.js"></script>
+    <script src="bower_components/json3/lib/json3.js"></script>
+    <![endif]-->
+    <!-- endbuild -->
+
+    <!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/affix.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/alert.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/button.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/carousel.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/collapse.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/dropdown.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tab.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/transition.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/scrollspy.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/modal.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tooltip.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/popover.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <script src="bower_components/leaflet/dist/leaflet.js"></script>
+    <script src="bower_components/leaflet/dist/leaflet-src.js"></script>
+    <script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js"></script>
+    <script src="bower_components/d3/d3.js"></script>
+    <script src="bower_components/nouislider/distribute/jquery.nouislider.all.min.js"></script>
+    <script src="bower_components/spin.js/spin.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+        <!-- build:js({.tmp,app}) scripts/scripts.js -->
+        <script src="scripts/app.js"></script>
+        <script src="scripts/controllers/main.js"></script>
+        <script src="scripts/filters/suffix.js"></script>
+        <!-- endbuild -->
+</body>
+</html>
