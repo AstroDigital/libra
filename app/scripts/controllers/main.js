@@ -379,14 +379,24 @@ angular.module('dauriaSearchApp')
      $scope.drawMarkerOutline = function(markerName) {
        // first checks to see if the marker is on the map, then outlines
        // how would it not be on the map?
+
+       // calculate a longitude adjustment for being off the first earth
+       var adjust = 0;
+       if ($scope.markers[markerName].sceneCenterLongitude > 0) {
+         adjust = Math.floor(($scope.bounds.southWest.lng + 180) / 360) * 360;
+       }
+       else {
+         adjust = Math.floor(($scope.bounds.northEast.lng + 180) / 360) * 360;
+       }
+       console.log(adjust)
        if ($scope.markers[markerName]) {
          $scope.paths[markerName] = {
            type: 'polygon',
            latlngs: [
-           { lat: $scope.markers[markerName].upperLeftCornerLatitude, lng: $scope.markers[markerName].upperLeftCornerLongitude},
-           { lat: $scope.markers[markerName].upperRightCornerLatitude, lng: $scope.markers[markerName].upperRightCornerLongitude},
-           { lat: $scope.markers[markerName].lowerRightCornerLatitude, lng: $scope.markers[markerName].lowerRightCornerLongitude},
-           { lat: $scope.markers[markerName].lowerLeftCornerLatitude, lng: $scope.markers[markerName].lowerLeftCornerLongitude}
+           { lat: $scope.markers[markerName].upperLeftCornerLatitude, lng: $scope.markers[markerName].upperLeftCornerLongitude + adjust},
+           { lat: $scope.markers[markerName].upperRightCornerLatitude, lng: $scope.markers[markerName].upperRightCornerLongitude + adjust},
+           { lat: $scope.markers[markerName].lowerRightCornerLatitude, lng: $scope.markers[markerName].lowerRightCornerLongitude + adjust},
+           { lat: $scope.markers[markerName].lowerLeftCornerLatitude, lng: $scope.markers[markerName].lowerLeftCornerLongitude + adjust}
            ],
            color: '#555',
            weight: 1
