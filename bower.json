@@ -19,7 +19,7 @@
     "jquery": "~2.1",
     "spin.js": "~2.0.2",
     "angular-bootstrap": "~0.12.0",
-    "spin.js": "~2.0.2"
+    "multi-download": "~1.0.0"
   },
   "devDependencies": {
     "jasmine-jquery": "^2.0.5",
