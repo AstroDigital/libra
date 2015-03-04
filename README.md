@@ -1,4 +1,4 @@
-# Dauria Search [![Build Status](https://travis-ci.org/AstroDigital/libra.svg)](https://travis-ci.org/AstroDigital/libra)
+# Libra [![Build Status](https://travis-ci.org/AstroDigital/libra.svg)](https://travis-ci.org/AstroDigital/libra)
 
 ## Overview
 
@@ -39,9 +39,9 @@ your browser)
 - Add a way to toggle between various basemaps
 - Implement lazy loading for the results pane so not all images are loaded at
 the same time
-- Search/geocoding
+- Place name search
 - Different cluster sizes at different zoom levels
-- Client size caching of results (TBD)
+- Client side caching of results (TBD)
 - Improved stack icons (2-3 circles for multiple results)
 
 ## Known issues
@@ -59,3 +59,4 @@ Now that you have access to all this wonderful imagery, you may be wondering wha
 - [GDAL](http://www.gdal.org/) [[Landsat-8 specific tutorial](https://www.mapbox.com/blog/processing-landsat-8/)]
 - [QGIS](http://qgis.org) [[Tutorials](http://www.qgistutorials.com)]
 - [rasterio](https://github.com/mapbox/rasterio)
+- [Mapbox guide](https://www.mapbox.com/guides/processing-satellite-imagery/)
