@@ -380,23 +380,24 @@ angular.module('dauriaSearchApp')
        // first checks to see if the marker is on the map, then outlines
        // how would it not be on the map?
 
-       // calculate a longitude adjustment for being off the first earth
-       var adjust = 0;
-       if ($scope.markers[markerName].sceneCenterLongitude > 0) {
-         adjust = Math.floor(($scope.bounds.southWest.lng + 180) / 360) * 360;
+       // calculate a longitude adjustment object for being off the first earth
+       // needs to be unique for each corner to cover edge cases
+       var lonCorners = ['upperLeftCornerLongitude','upperRightCornerLongitude','lowerRightCornerLongitude','lowerLeftCornerLongitude'];
+       var adjust = {};
+       var adjustBound;
+       for (var i=0; i < lonCorners.length; i++){
+         adjustBound = ($scope.markers[markerName][lonCorners[i]] > 0) ? 'southWest' : 'northEast';
+         adjust[lonCorners[i]] = Math.floor(($scope.bounds[adjustBound].lng + 180) / 360) * 360;
        }
-       else {
-         adjust = Math.floor(($scope.bounds.northEast.lng + 180) / 360) * 360;
-       }
-       console.log(adjust)
+       console.log(adjust);
        if ($scope.markers[markerName]) {
          $scope.paths[markerName] = {
            type: 'polygon',
            latlngs: [
-           { lat: $scope.markers[markerName].upperLeftCornerLatitude, lng: $scope.markers[markerName].upperLeftCornerLongitude + adjust},
-           { lat: $scope.markers[markerName].upperRightCornerLatitude, lng: $scope.markers[markerName].upperRightCornerLongitude + adjust},
-           { lat: $scope.markers[markerName].lowerRightCornerLatitude, lng: $scope.markers[markerName].lowerRightCornerLongitude + adjust},
-           { lat: $scope.markers[markerName].lowerLeftCornerLatitude, lng: $scope.markers[markerName].lowerLeftCornerLongitude + adjust}
+           { lat: $scope.markers[markerName].upperLeftCornerLatitude, lng: $scope.markers[markerName].upperLeftCornerLongitude + adjust.upperLeftCornerLongitude},
+           { lat: $scope.markers[markerName].upperRightCornerLatitude, lng: $scope.markers[markerName].upperRightCornerLongitude + adjust.upperRightCornerLongitude},
+           { lat: $scope.markers[markerName].lowerRightCornerLatitude, lng: $scope.markers[markerName].lowerRightCornerLongitude + adjust.lowerRightCornerLongitude},
+           { lat: $scope.markers[markerName].lowerLeftCornerLatitude, lng: $scope.markers[markerName].lowerLeftCornerLongitude + adjust.lowerLeftCornerLongitude}
            ],
            color: '#555',
            weight: 1
