@@ -1,0 +1,36 @@
+<div class="modal-header">
+  <h3 class="modal-title">Advanced Download</h3>
+</div>
+<div class="modal-body advanced-modal">
+  <p class="text-center">Choose individual satellite bands to download.</p>
+  <div class="row band-selection">
+    <div class="col-md-6 band-options">
+      <div><input type="checkbox" name="band" id="band-1" value="band-1"><label for="band-1">B1 - Coastal aerosol</label></div>
+      <div><input type="checkbox" name="band" id="band-2" value="band-2"><label for="band-2">B2 - Blue</label></div>
+      <div><input type="checkbox" name="band" id="band-3" value="band-3"><label for="band-3">B3 - Green</label></div>
+      <div><input type="checkbox" name="band" id="band-4" value="band-4"><label for="band-4">B4 - Red</label></div>
+      <div><input type="checkbox" name="band" id="band-5" value="band-5"><label for="band-5">B5 - Near Infrared</label></div>
+      <div><input type="checkbox" name="band" id="band-6" value="band-6"><label for="band-6">B6 - Shortwave Infrared 1</label></div>
+    </div>
+    <div class="col-md-6 band-options">
+      <div><input type="checkbox" name="band" id="band-7" value="band-7"><label for="band-7">B7 - Shortwave Infrared 2</label></div>
+      <div><input type="checkbox" name="band" id="band-8" value="band-8"><label for="band-8">B8 - Panchromatic</label></div>
+      <div><input type="checkbox" name="band" id="band-9" value="band-9"><label for="band-9">B9 - Cirrus</label></div>
+      <div><input type="checkbox" name="band" id="band-10" value="band-10"><label for="band-10">B10 - Thermal Infrared 1</label></div>
+      <div><input type="checkbox" name="band" id="band-11" value="band-11"><label for="band-11">B11 - Thermal Infrared 2</label></div>
+      <div><input type="checkbox" name="band" id="band-QA" value="band-QA"><label for="band-QA">BQA - Quality Assessment</label></div>
+    </div>
+  </div>
+  <hr>
+  <div class="download-prefills">
+    <ul>
+      <li ng-click="bandPrefill([4,3,2])"><div><p>True Color: 4,3,2</p></div><div><img ng-src="images/truecolor.png" /></div></li>
+      <li ng-click="bandPrefill([5,4])"><div><p>NDVI: 5,4</p></div><div><img ng-src="images/ndvi.png" /></div></li>
+      <li ng-click="bandPrefill([7,5,2])"><div><p>Urban False Color: 7,5,2</p></div><div><img ng-src="images/urban.png" /></div></li>
+    </ul>
+  </div>
+  <hr>
+  <div class="download-individual">
+    <a id="download-bands" class="btn btn-primary" ng-bind-template="Download Bands" ng-click="downloadBands()"></a>
+  </div>
+</div>
