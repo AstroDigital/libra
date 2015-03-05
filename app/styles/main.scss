@@ -111,7 +111,6 @@ body {
   width: 100%;
   overflow: auto;
   border-left: 1px solid #555;
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAAOklEQVQYV2M8ceKEsYWFxVkGHAAkzwiSw6UQJg5WhE0hska4ImSF6CajKMJlNWkmoVuB4SaCviMmnAA4BkEgsNO8bgAAAABJRU5ErkJggg==);
 }
 
 .results-pane .result {
@@ -239,16 +238,19 @@ body {
 
   .btn {
     font-weight: 100;
-    background: #231850;
-    border-color: #231850;
+    font-size: 15px;
+    background: rgba(35,24,80,0.8);
+    border-color: rgb(79,70,115);
 
     &:hover {
       border-color: #231850;
     }
   }
 
-  p {
-    font-size: 15px;
+  .download-info {
+    font-size: 14px;
+    margin-top: 30px;
+    padding: 10px;
   }
 
 }
@@ -566,4 +568,106 @@ body {
     padding-right: 0;
   }
 
+}
+
+.download-prefills{
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-size: 14px;
+  }
+  li {
+    display: inline-block;
+    height: 88px;
+    margin: 5px 20px;
+    cursor: pointer;
+    border: 1px solid rgba(35,24,80,0.8);
+    &:hover {
+      img {
+        opacity: 0.8;
+      }
+    }
+    div {
+      display: inline-block;
+      background: black;
+      width: 120px;
+      vertical-align: middle;
+    }
+    div:first-of-type {
+      padding: 5px;
+      background: white;
+    }
+    img {
+      width: 120px;
+      height: 86px;
+    }
+  }
+}
+.band-selection {
+  label {
+    display: inline-block;
+    font-weight: 100;
+    margin: 5px 10px;
+    color: white;
+    letter-spacing: 0.1em;
+    height: 26px;
+    line-height: 26px;
+    vertical-align: bottom;
+  }
+  label:before {
+    border: 1px solid white;
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    vertical-align: middle;
+    line-height: normal;
+  }
+  label:hover::before {
+    background: rgba(255,255,255,0.2);
+  }
+  input {
+    display: none;
+  }
+  input[type=checkbox]:checked + label:before {
+    background: rgba(255,255,255,0.6);
+  }
+}
+
+.download-individual {
+  text-align: center;
+  .btn {
+    font-weight: 100;
+    font-size: 18px;
+    letter-spacing: 0.1em;
+    background: rgba(35,24,80,0.8);
+    border: 0;
+
+    &:hover {
+      background: #231850;
+    }
+  }
+}
+
+.band-options {
+  div {
+    background: rgba(35,24,80,0.8);
+    margin-bottom: 5px;
+  }
+}
+
+.advanced-modal {
+  font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-weight: 100;
+  p {
+    font-weight: 300;
+    font-family: Lato, sans-serif;
+  }
+  hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
 }
