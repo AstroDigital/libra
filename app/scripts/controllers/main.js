@@ -666,6 +666,19 @@ angular.module('dauriaSearchApp')
       });
     };
 
+    $scope.openAdvancedDownload = function () {
+      $scope.modalInstance = $modal.open({
+        templateUrl: 'views/advanced.html',
+        controller: 'AdvancedCtrl',
+        size: 'lg',
+        resolve: {
+          selectedResult: function () {
+            return $scope.selectedResult;
+          }
+        }
+      });
+    };
+
     /**
     * Makes a Google Storage JSON API request to get the download file size.
     *
@@ -680,8 +693,9 @@ angular.module('dauriaSearchApp')
           result.downloadSize = ' (' + Math.round(data.size / 1048576) + ' MB)';
         })
         .error( function(){
-          // this will hide the download button since google doesn't have the scene yet
+          // google doesn't have the scene yet
           result.noData = true;
+          result.downloadSize = '';
         });
       }
     };
@@ -690,9 +704,15 @@ angular.module('dauriaSearchApp')
     * sends a google analytics click event for download tracking
     *
     */
-    $scope.downloadTrack = function(){
+
+    $scope.downloadBundle = function() {
+      multiDownload([$scope.selectedResult.downloadURL]);
+      $scope.downloadTrack();
+    };
+
+    $scope.downloadTrack = function() {
       ga('send', 'event', 'download', 'click', $scope.selectedResult.sceneID);
-    }
+    };
 
 
     ////////////////////////////////////////////////////////////
