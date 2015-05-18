@@ -30,6 +30,15 @@ $ grunt serve
 Serves the site at: `http://localhost:9090` (should automatically open in
 your browser)
 
+## Deploying the app
+To deploy the app, run the command below to create a `dist` directory in your project root
+
+```
+$ grunt build
+```
+
+`dist` is a directory of static HTML, CSS and JS files and can be served via any traditional web-serving mechanism.
+
 ## Future improvements
 - Determine a good way to show the total number of results being displayed
 - Add animations where applicable
