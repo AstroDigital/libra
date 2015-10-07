@@ -25,12 +25,11 @@ angular.module('dauriaSearchApp')
     $scope.sunAzimuthMax = 180;
     // Date range.
     // Default date is from 'now' to 'now - 6 months'
-    var dateEnd = new Date();
-    var dateEndStr = dateEnd.getFullYear() + '-' + zeroPad(dateEnd.getMonth() + 1,2) + '-' + zeroPad(dateEnd.getDate(),2);
-    var dateStart = new Date(dateEnd.getTime());
-    // Go back 6 months. Year will be automatically updated.
-    dateStart.setMonth(-6);
-    var dateStartStr = dateStart.getFullYear() + '-' + zeroPad(dateStart.getMonth() + 1,2) + '-' + zeroPad(dateStart.getDate(),2);
+    var dateEnd = moment(),
+        dateStart = moment().subtract(6, 'months'),
+        dateStartStr = dateStart.format('YYYY-MM-DD'),
+        dateEndStr = dateEnd.format('YYYY-MM-DD');
+
     $scope.dateRangeStart = dateStartStr;
     $scope.dateRangeEnd = dateEndStr;
 
@@ -196,7 +195,7 @@ angular.module('dauriaSearchApp')
 
       $scope.searchString = queryConstructor({
         dateRange: [$scope.dateRangeStart, $scope.dateRangeEnd],
-        limit: 2000,
+        limit: 3000,
         sceneCenterLatRange: [$scope.bounds.northEast.lat, $scope.bounds.southWest.lat],
         // mod function here supports negative modulo in the 'expected fashion'
         // we are treating the longitude this way to support multiple rotations around the earth
