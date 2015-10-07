@@ -38,6 +38,8 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "install": "bower install",
+    "serve": "grunt serve"
   }
 }
