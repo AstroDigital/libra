@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-- '0.10'
+- '0.12'
 
 env:
   global:
@@ -8,7 +8,6 @@ env:
 
 before_script:
 - npm install -g bower grunt-cli
-- npm install
 - bower install
 - gem install sass --version "=3.4.9"
 - gem install compass --version "=1.0.1"
