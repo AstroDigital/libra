@@ -1,3 +1,5 @@
+/* global multiDownload */
+
 'use strict';
 
 /**
