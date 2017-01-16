@@ -68,7 +68,7 @@
               <div class="col-md-6 no-padding">
                 <div class="result" ng-if="selectedResult === null && $even" ng-repeat="result in results | filter: resultsFilter | filter: mapSelectionFilter | orderBy:sortField:sortReverse | limitTo: 50 " ng-click="selectResult(result)" ng-mouseover="drawMarkerOutline(getMarkerName(result))" ng-mouseleave="conditionalResetPaths();">
                   <div class="result-content">
-                    <img class="thumb pull-right" ng-src="{{result.browseURL}}"/>
+                    <img class="thumb pull-right" ng-src="{{result.thumbnail}}"/>
                     <div class="result-overlay">
                       <div><span ng-bind="result.acquisitionDate"></span><img class="table-icon" src="images/noun_2019_cc_noattr_w.png" title="Date" /></div>
                       <div><span ng-bind="result.cloudCoverFull | number:2 | suffix:'per'"></span><img class="table-icon" src="images/noun_88351_cc_noattr_w.png" title="Cloud Coverage" /></div>
@@ -80,7 +80,7 @@
               <div class="col-md-6 no-padding">
                 <div class="result" ng-if="selectedResult === null && $odd" ng-repeat="result in results | filter: resultsFilter | filter: mapSelectionFilter | orderBy:sortField:sortReverse | limitTo: 50" ng-click="selectResult(result)" ng-mouseover="drawMarkerOutline(getMarkerName(result))" ng-mouseleave="conditionalResetPaths();">
                   <div class="result-content">
-                    <img class="thumb pull-right" ng-src="{{result.browseURL}}"/>
+                    <img class="thumb pull-right" ng-src="{{result.thumbnail}}"/>
                     <div class="result-overlay">
                       <div><span ng-bind="result.acquisitionDate"></span><img class="table-icon" src="images/noun_2019_cc_noattr_w.png" title="Date" /></div>
                       <div><span ng-bind="result.cloudCoverFull | number:2 | suffix:'per'"></span><img class="table-icon" src="images/noun_88351_cc_noattr_w.png" title="Cloud Coverage" /></div>

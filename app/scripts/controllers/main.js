@@ -205,11 +205,10 @@ angular.module('dauriaSearchApp')
         continuous: continuous
       });
 
-      $http.post(endpoint + '/v1/landsat/', $scope.searchString, { timeout: canceller.promise })
+      $http.get(endpoint + '/landsat?search=' + $scope.searchString, { timeout: canceller.promise })
         .success(function(data) {
-          console.log(data);
         setInfoPane(); // Hide info pane so it doesn't flash when results are redrawn
-        var total = data.meta.found;
+        var total = data.meta.results.total;
         $scope.results = [];
         $scope.markers = {};
         // clear histograms
@@ -748,43 +747,41 @@ angular.module('dauriaSearchApp')
     }
 
     function queryConstructor (options) {
-      var query = {};
+      var queryString;
+      var query = [];
 
       // dateRange -- array of date strings. format: [YYYY-MM-DD,YYYY-MM-DD]
       var dateRange = options.dateRange || ['2014-01-01', '2015-01-05'];
-      query.date_from = dateRange[0];
-      query.date_to = dateRange[1];
+      query.push(arrayHelper(dateRange, 'acquisitionDate'));
 
       // sceneCenterLatRange -- array of floats specifying the scene centroid latitude. e.g. [4.3, 78.9]
       var sceneCenterLatRange = options.sceneCenterLatRange.sort(sortNumber) || ['-90', '90'];
-      // query.push(arrayHelper(sceneCenterLatRange,'sceneCenterLatitude'));
+      query.push(arrayHelper(sceneCenterLatRange, 'sceneCenterLatitude'));
 
       // sceneCenterLonRange -- array of floats specifying the scene centroid longitude. e.g. [4.3, 78.9]
       // also uses options.continuous to decide if we need two separate ranges to wrap around the 180th meridian
       if (options.continuous) {
         var sceneCenterLonRange = options.sceneCenterLonRange.sort(sortNumber) || ['-180', '180'];
+        query.push(arrayHelper(sceneCenterLonRange, 'sceneCenterLongitude'));
       } else {
         var range1 = [-180,options.sceneCenterLonRange.sort(sortNumber)[0]];
         var range2 = [options.sceneCenterLonRange.sort(sortNumber)[1],180];
+        query.push('(' + arrayHelper(range1, 'sceneCenterLongitude') + '+OR+' + arrayHelper(range2, 'sceneCenterLongitude') + ')');
       }
 
-      // TODO handle wraparound case
-      var geojson = '{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[' + sceneCenterLonRange[0] + ',' + sceneCenterLatRange[1] + '],[' + sceneCenterLonRange[0] + ',' + sceneCenterLatRange[0] + '],[' + sceneCenterLonRange[1] + ',' + sceneCenterLatRange[0] + '],[' + sceneCenterLonRange[1] + ',' + sceneCenterLatRange[1] + '],[' + sceneCenterLonRange[0] + ',' + sceneCenterLatRange[1] + ']]]},"properties":{}}';
-      query.intersects = geojson;
+      queryString = query.join('+AND+');
 
       // limit -- integer specifying the maximum results return.
       if (options.limit) {
-        query.limit = options.limit;
+        queryString += '&limit=' + options.limit;
       }
 
       // skip: integer specifying the number of results to skip
       if (options.skip) {
-        query.skip = options.skip;
+        queryString += '&skip=' + options.skip;
       }
 
-      query.summary = 'true';
-
-      return query;
+      return queryString;
     }
 
     function arrayHelper(range,field) {
