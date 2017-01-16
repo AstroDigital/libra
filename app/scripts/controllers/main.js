@@ -1,3 +1,5 @@
+/* global ga moment multiDownload */
+
 'use strict';
 
 /**
@@ -213,7 +215,7 @@ angular.module('dauriaSearchApp')
         d3.select('.cloudCoverSlider svg').selectAll('.bar').remove();
         d3.select('.sunAzimuthSlider svg').selectAll('.bar').remove();
         // only renew results if we have a 'resonable' number
-        if (total < 2000){
+        if (total < 3000){
           for (var i=0; i < data.results.length; i++){
             var scene = data.results[i];
             scene.className = scene.sceneID + '-' + scene.row + '-' + scene.path;
@@ -259,7 +261,7 @@ angular.module('dauriaSearchApp')
 
         // stop the spinner
         $scope.spinner.stop();
-      }).error( function (data,status) {
+      }).error(function (data, status) {
         // need to check for an error because cancelling the request also sends us here
         if (status !== 0) {
           $scope.results = [];
@@ -744,28 +746,27 @@ angular.module('dauriaSearchApp')
       });
     }
 
-    function queryConstructor(options) {
-      var queryString,
-      query = [];
+    function queryConstructor (options) {
+      var queryString;
+      var query = [];
 
       // dateRange -- array of date strings. format: [YYYY-MM-DD,YYYY-MM-DD]
       var dateRange = options.dateRange || ['2014-01-01', '2015-01-05'];
-      query.push(arrayHelper(dateRange,'acquisitionDate'));
+      query.push(arrayHelper(dateRange, 'acquisitionDate'));
 
       // sceneCenterLatRange -- array of floats specifying the scene centroid latitude. e.g. [4.3, 78.9]
       var sceneCenterLatRange = options.sceneCenterLatRange.sort(sortNumber) || ['-90', '90'];
-      query.push(arrayHelper(sceneCenterLatRange,'sceneCenterLatitude'));
+      query.push(arrayHelper(sceneCenterLatRange, 'sceneCenterLatitude'));
 
       // sceneCenterLonRange -- array of floats specifying the scene centroid longitude. e.g. [4.3, 78.9]
       // also uses options.continuous to decide if we need two separate ranges to wrap around the 180th meridian
-      if (options.continuous){
+      if (options.continuous) {
         var sceneCenterLonRange = options.sceneCenterLonRange.sort(sortNumber) || ['-180', '180'];
-        query.push(arrayHelper(sceneCenterLonRange,'sceneCenterLongitude'));
-      }
-      else {
+        query.push(arrayHelper(sceneCenterLonRange, 'sceneCenterLongitude'));
+      } else {
         var range1 = [-180,options.sceneCenterLonRange.sort(sortNumber)[0]];
         var range2 = [options.sceneCenterLonRange.sort(sortNumber)[1],180];
-        query.push('(' + arrayHelper(range1,'sceneCenterLongitude') + '+OR+' + arrayHelper(range2,'sceneCenterLongitude') + ')');
+        query.push('(' + arrayHelper(range1, 'sceneCenterLongitude') + '+OR+' + arrayHelper(range2, 'sceneCenterLongitude') + ')');
       }
 
       queryString = query.join('+AND+');

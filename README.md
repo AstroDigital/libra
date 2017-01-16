@@ -4,8 +4,8 @@
 
 Libra is an open-source, Landsat-8 imagery browser. It relies on [landsat-api](https://github.com/developmentseed/landsat-api) and an [AngularJS](https://angularjs.org/)-designed GUI to allow users to browse, sort, and download more than 275 Terabytes of open Landsat imagery.
 
-See [here](http://www.developmentseed.org/blog/2015/01/15/dauria-image-search/),
-[here](https://medium.com/@astrodigital/browsing-large-sets-of-satellite-imagery-7096db1a807f), and [here](http://www.developmentseed.org/blog/2015/01/22/announcing-libra/) for more information.
+See [here](https://developmentseed.org/blog/2015/01/15/astro-digital-image-search/),
+[here](https://medium.com/@astrodigital/browsing-large-sets-of-satellite-imagery-7096db1a807f), and [here](https://developmentseed.org/blog/2015/01/22/announcing-libra/) for more information.
 
 ## Setting up your development environment
 To set up the development environment for this app, you'll need to install the following on your system:
