@@ -1,4 +1,4 @@
-/* global multiDownload */
+/* global multiDownload moment*/
 
 'use strict';
 
@@ -28,8 +28,16 @@ angular.module('dauriaSearchApp')
           bands.push(jQuery(this).attr('value').replace('band-',''));
         }
       });
+      // AWS maintains different urls for pre collection 1
+      var collectionOneSwapDate = moment('2017-05-01', 'YYYY-MM-DD')
       var urls = bands.map(function(band){
-        return 'https://landsat-pds.s3.amazonaws.com/L8/' + zeroPad(selectedResult.path,3) + '/' + zeroPad(selectedResult.row,3) + '/' + selectedResult.sceneID + '/' + selectedResult.sceneID + '_B' + band + '.TIF';
+        if (moment(selectedResult.acquisitionDate, 'YYYY-MM-DD') < collectionOneSwapDate) {
+          // replacing everything with revision 00 gets AWS bands more reliably
+          return 'https://landsat-pds.s3.amazonaws.com/L8/' + zeroPad(selectedResult.path,3) + '/' + zeroPad(selectedResult.row,3) + '/' + selectedResult.sceneID.slice(0, -2) + '00/' + selectedResult.sceneID.slice(0, -2) + '00_B' + band + '.TIF';
+        } else {
+          return 'https://landsat-pds.s3.amazonaws.com/c1/L8/' + zeroPad(selectedResult.path,3) + '/' + zeroPad(selectedResult.row,3) + '/' + selectedResult.product_id + '/' + selectedResult.product_id + '_B' + band + '.TIF';
+        }
+
       });
       multiDownload(urls);
     };

@@ -16,7 +16,7 @@ angular.module('dauriaSearchApp')
     $scope.results = [];
 
     // api endpoint and canceller
-    var endpoint = 'https://api.developmentseed.org';
+    var endpoint = 'https://api.developmentseed.org/satellites';
     var canceller = $q.defer();
 
     // Cloud coverage.
@@ -208,7 +208,7 @@ angular.module('dauriaSearchApp')
       $http.get(endpoint + '/landsat?search=' + $scope.searchString, { timeout: canceller.promise })
         .success(function(data) {
         setInfoPane(); // Hide info pane so it doesn't flash when results are redrawn
-        var total = data.meta.results.total;
+        var total = data.meta.found;
         $scope.results = [];
         $scope.markers = {};
         // clear histograms
@@ -234,7 +234,6 @@ angular.module('dauriaSearchApp')
             scene.icon.type = 'div';
             scene.icon.className = 'map-icon text-center';
             scene.downloadURL = 'https://storage.googleapis.com/earthengine-public/landsat/L8/' + zeroPad(scene.path,3) + '/' + zeroPad(scene.row,3) + '/' + scene.sceneID + '.tar.bz';
-            scene.downloadSize = false;
             $scope.results.push(scene);
           }
           updateMarkers();
@@ -349,7 +348,6 @@ angular.module('dauriaSearchApp')
     $scope.selectResult = function(result) {
       $scope.selectedResult = result;
       $scope.drawMarkerOutline($scope.getMarkerName(result));
-      $scope.getDownloadSize(result);
     };
 
     /**
@@ -681,35 +679,9 @@ angular.module('dauriaSearchApp')
     };
 
     /**
-    * Makes a Google Storage JSON API request to get the download file size.
-    *
-    * @param {Object} result
-    */
-    $scope.getDownloadSize = function(result) {
-      if (!result.downloadSize) {
-        var requestURL = 'https://www.googleapis.com/storage/v1/b/earthengine-public/o/landsat%2FL8%2F' + zeroPad(result.path,3) + '%2F' + zeroPad(result.row,3) + '%2F' + result.sceneID + '.tar.bz';
-        $http.get(requestURL)
-        .success( function(data){
-          // lazily formatted assuming it's always in the MB range
-          result.downloadSize = ' (' + Math.round(data.size / 1048576) + ' MB)';
-        })
-        .error( function(){
-          // google doesn't have the scene yet
-          result.noData = true;
-          result.downloadSize = '';
-        });
-      }
-    };
-
-    /**
     * sends a google analytics click event for download tracking
     *
     */
-
-    $scope.downloadBundle = function() {
-      multiDownload([$scope.selectedResult.downloadURL]);
-      $scope.downloadTrack();
-    };
 
     $scope.downloadTrack = function() {
       ga('send', 'event', 'download', 'click', $scope.selectedResult.sceneID);
@@ -780,6 +752,7 @@ angular.module('dauriaSearchApp')
       if (options.skip) {
         queryString += '&skip=' + options.skip;
       }
+      queryString += '&fields=sceneCenterLatitude,sceneCenterLongitude,sunAzimuth,cloudCoverFull,path,row,sceneID,thumbnail,acquisitionDate,product_id,upperLeftCornerLatitude,upperLeftCornerLongitude,upperRightCornerLatitude,upperRightCornerLongitude,lowerLeftCornerLatitude,lowerLeftCornerLongitude,lowerRightCornerLatitude,lowerRightCornerLongitude'
 
       return queryString;
     }

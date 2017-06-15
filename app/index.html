@@ -98,7 +98,7 @@
                   <img class="pull-left" src="images/noun_17256_w.png" ng-click="resetSelectedResult()"/>
                 </div>
                 <div class="preview">
-                  <img ng-src="{{selectedResult.browseURL}}" width="100%"/>
+                  <img ng-src="{{selectedResult.thumbnail}}" width="100%"/>
                 </div>
 
                 <div class="result-data">
@@ -107,9 +107,9 @@
                   <img src="images/noun_88350_cc_noattr.png" title="Sun Azimuth" /><span ng-bind="selectedResult.sunAzimuth | number:2 | suffix:'deg'"></span>
                 </div>
 
-                <a href="#" class="btn btn-primary" ng-class="{'disabled': selectedResult.noData }" ng-bind-template="Download Bundle {{selectedResult.downloadSize}}" ng-click="downloadBundle()"></a>
-                <a href="#" class="btn btn-primary" ng-class="{'disabled': selectedResult.sceneID.substring(9,13) !== '2015' }" ng-bind-template="Download Bands" ng-click="openAdvancedDownload()"></a>
-                <p class="download-info" ng-bind-template="Bundled downloads are available within one week of the image being taken. Individual bands are available for all 2015 scenes."></p>
+                <a target="_blank" ng-href="https://earthexplorer.usgs.gov/download/12864/{{selectedResult.sceneID}}/STANDARD/EE" class="btn btn-primary" ng-bind-template="Download Bundle" ng-click="downloadTrack()"></a>
+                <a href="#" class="btn btn-primary" ng-class="{'disabled': Number(selectedResult.sceneID.substring(9,13)) < 2015 }" ng-bind-template="Download Bands" ng-click="openAdvancedDownload()"></a>
+                <p class="download-info" ng-bind-template="Bundled downloads are available within one week of the image being taken. Individual bands are available for all scenes starting in 2015."></p>
               </div>
             </div>
 
@@ -155,7 +155,6 @@
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="bower_components/angular-touch/angular-touch.js"></script>
-    <script src="bower_components/leaflet/dist/leaflet.js"></script>
     <script src="bower_components/leaflet/dist/leaflet-src.js"></script>
     <script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js"></script>
     <script src="bower_components/d3/d3.js"></script>
