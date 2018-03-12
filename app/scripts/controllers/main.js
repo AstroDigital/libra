@@ -238,7 +238,7 @@ angular.module('dauriaSearchApp')
           }
           updateMarkers();
           if ($scope.openFilter === 'cloud' || $scope.openFilter === 'sun' ){
-            var helperNames = ($scope.openFilter === 'cloud') ? {main:'cloudCover', val: 'cloudCoverFull', bound: 100, bin: 20} : {main:'sunAzimuth', val: 'sunAzimuth', bound: 180, bin: 36};
+            var helperNames = ($scope.openFilter === 'cloud') ? {main:'cloudCover', val: 'cloud_coverage', bound: 100, bin: 20} : {main:'sunAzimuth', val: 'sunAzimuth', bound: 180, bin: 36};
             var vals = $scope.results.map(function(result){ return Math.max(result[helperNames.val],0); });
             if ($scope.openFilter === 'sun'){
               vals = vals.filter(function(sun){ return sun > 0;});
@@ -292,8 +292,8 @@ angular.module('dauriaSearchApp')
      * @param {Object} val
      */
     $scope.resultsFilter = function(val) {
-      return val.cloudCoverFull >= $scope.cloudCoverageMin &&
-        val.cloudCoverFull <= $scope.cloudCoverageMax &&
+      return val.cloud_coverage >= $scope.cloudCoverageMin &&
+        val.cloud_coverage <= $scope.cloudCoverageMax &&
         val.sunAzimuth >= $scope.sunAzimuthMin &&
         val.sunAzimuth <= $scope.sunAzimuthMax;
     };
@@ -421,7 +421,7 @@ angular.module('dauriaSearchApp')
            $scope.newDateFilter();
            break;
          case 'cloud':
-           var cloudVals = $scope.results.map(function(result){ return Math.max(result.cloudCoverFull,0); });
+           var cloudVals = $scope.results.map(function(result){ return Math.max(result.cloud_coverage,0); });
            size = getSize($scope.openFilter);
            $scope.newFilterGraph(['cloudCoverageMin', 'cloudCoverageMax'], [0, 100], '.cloudCoverSlider', size, '%');
            $scope.updateHistogram('.cloudCoverSlider', cloudVals, [0, 100], 20, size);
@@ -752,7 +752,7 @@ angular.module('dauriaSearchApp')
       if (options.skip) {
         queryString += '&skip=' + options.skip;
       }
-      queryString += '&fields=sceneCenterLatitude,sceneCenterLongitude,sunAzimuth,cloudCoverFull,path,row,sceneID,thumbnail,acquisitionDate,product_id,upperLeftCornerLatitude,upperLeftCornerLongitude,upperRightCornerLatitude,upperRightCornerLongitude,lowerLeftCornerLatitude,lowerLeftCornerLongitude,lowerRightCornerLatitude,lowerRightCornerLongitude'
+      queryString += '&fields=sceneCenterLatitude,sceneCenterLongitude,sunAzimuth,cloud_coverage,path,row,sceneID,thumbnail,acquisitionDate,product_id,upperLeftCornerLatitude,upperLeftCornerLongitude,upperRightCornerLatitude,upperRightCornerLongitude,lowerLeftCornerLatitude,lowerLeftCornerLongitude,lowerRightCornerLatitude,lowerRightCornerLongitude'
 
       return queryString;
     }

@@ -71,7 +71,7 @@
                     <img class="thumb pull-right" ng-src="{{result.thumbnail}}"/>
                     <div class="result-overlay">
                       <div><span ng-bind="result.acquisitionDate"></span><img class="table-icon" src="images/noun_2019_cc_noattr_w.png" title="Date" /></div>
-                      <div><span ng-bind="result.cloudCoverFull | number:2 | suffix:'per'"></span><img class="table-icon" src="images/noun_88351_cc_noattr_w.png" title="Cloud Coverage" /></div>
+                      <div><span ng-bind="result.cloud_coverage | number:2 | suffix:'per'"></span><img class="table-icon" src="images/noun_88351_cc_noattr_w.png" title="Cloud Coverage" /></div>
                       <div><span ng-bind="result.sunAzimuth | number:2 | suffix:'deg'"></span><img class="table-icon" src="images/noun_88350_cc_noattr_w.png" title="Sun Azimuth" /></div>
                     </div>
                   </div>
@@ -83,7 +83,7 @@
                     <img class="thumb pull-right" ng-src="{{result.thumbnail}}"/>
                     <div class="result-overlay">
                       <div><span ng-bind="result.acquisitionDate"></span><img class="table-icon" src="images/noun_2019_cc_noattr_w.png" title="Date" /></div>
-                      <div><span ng-bind="result.cloudCoverFull | number:2 | suffix:'per'"></span><img class="table-icon" src="images/noun_88351_cc_noattr_w.png" title="Cloud Coverage" /></div>
+                      <div><span ng-bind="result.cloud_coverage | number:2 | suffix:'per'"></span><img class="table-icon" src="images/noun_88351_cc_noattr_w.png" title="Cloud Coverage" /></div>
                       <div><span ng-bind="result.sunAzimuth | number:2 | suffix:'deg'"></span><img class="table-icon" src="images/noun_88350_cc_noattr_w.png" title="Sun Azimuth" /></div>
                     </div>
                   </div>
@@ -103,7 +103,7 @@
 
                 <div class="result-data">
                   <img src="images/noun_2019_cc_noattr.png" title="Date" /><span ng-bind="selectedResult.acquisitionDate"></span>
-                  <img src="images/noun_88351_cc_noattr.png" title="Cloud Coverage" /><span ng-bind="selectedResult.cloudCoverFull | number:2 | suffix:'per'"></span>
+                  <img src="images/noun_88351_cc_noattr.png" title="Cloud Coverage" /><span ng-bind="selectedResult.cloud_coverage | number:2 | suffix:'per'"></span>
                   <img src="images/noun_88350_cc_noattr.png" title="Sun Azimuth" /><span ng-bind="selectedResult.sunAzimuth | number:2 | suffix:'deg'"></span>
                 </div>
 
