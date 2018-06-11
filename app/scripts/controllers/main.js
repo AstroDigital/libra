@@ -752,7 +752,7 @@ angular.module('dauriaSearchApp')
       if (options.skip) {
         queryString += '&skip=' + options.skip;
       }
-      queryString += '&fields=sceneCenterLatitude,sceneCenterLongitude,sunAzimuth,cloud_coverage,path,row,sceneID,thumbnail,acquisitionDate,product_id,upperLeftCornerLatitude,upperLeftCornerLongitude,upperRightCornerLatitude,upperRightCornerLongitude,lowerLeftCornerLatitude,lowerLeftCornerLongitude,lowerRightCornerLatitude,lowerRightCornerLongitude'
+      queryString += '&fields=sceneCenterLatitude,sceneCenterLongitude,sunAzimuth,cloud_coverage,path,row,sceneID,aws_thumbnail,acquisitionDate,product_id,upperLeftCornerLatitude,upperLeftCornerLongitude,upperRightCornerLatitude,upperRightCornerLongitude,lowerLeftCornerLatitude,lowerLeftCornerLongitude,lowerRightCornerLatitude,lowerRightCornerLongitude'
 
       return queryString;
     }
