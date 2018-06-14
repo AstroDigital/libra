@@ -83,7 +83,7 @@ angular.module('dauriaSearchApp')
     ]);
 
     $scope.defaults = {
-      tileLayer: 'http://api.tiles.mapbox.com/v4/nate.kna67bkd/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZGV2c2VlZCIsImEiOiJnUi1mbkVvIn0.018aLhX0Mb0tdtaT2QNe2Q',
+      tileLayer: 'https://api.tiles.mapbox.com/v4/nate.kna67bkd/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZGV2c2VlZCIsImEiOiJnUi1mbkVvIn0.018aLhX0Mb0tdtaT2QNe2Q',
       maxZoom: 14
     };
 
